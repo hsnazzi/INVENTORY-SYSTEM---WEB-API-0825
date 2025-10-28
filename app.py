@@ -15,7 +15,7 @@ def get_db_connection():
             host='localhost',
             port=3306,               
             user='root',
-            password='webAPI0825',  # Assuming this is the correct password now
+            password='webAPI0825',  
             database='UPTM_InventoryDB' 
         )
         return conn
@@ -48,3 +48,4 @@ def status_check():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
