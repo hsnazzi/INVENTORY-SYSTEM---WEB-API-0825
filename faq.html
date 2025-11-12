@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="card">
+  <h2>Frequently Asked Questions (FAQ)</h2>
+  <p>
+    Here you’ll find answers to common questions about our
+    <strong>Stationery Supplier Data Management</strong> — a key module in our
+    Inventory Management System.
+  </p>
+
+  <h3>🧾 General Questions</h3>
+  <ul>
+    <li><strong>Q:</strong> What is Stationery Supplier Data Management?<br>
+        <strong>A:</strong> It’s a web-based system that allows users to manage supplier
+        information such as contact details, products supplied, and location data.
+    </li>
+    <li><strong>Q:</strong> How does this module connect to the rest of the inventory system?<br>
+        <strong>A:</strong> Supplier records are linked to product data, allowing
+        each item to be associated with its supplier.
+    </li>
+  </ul>
+
+  <h3>👥 Roles by Members</h3>
+  <ul>
+    <li><strong>Member 1:</strong> Product Management (CRUD for product inventory).</li>
+    <li><strong>Member 2:</strong> Stationery Supplier Data Management (managing supplier database).</li>
+    <li><strong>Member 3:</strong> User & Authentication (login and access control).</li>
+    <li><strong>Member 4:</strong> Reports & Analytics (data visualization and summary reports).</li>
+  </ul>
+</div>
+{% endblock %}

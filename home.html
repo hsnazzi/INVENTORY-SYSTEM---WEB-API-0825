@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="hero">
+  <h2>Welcome to Stationery Supplier Data Management</h2>
+  <p>
+    This module helps manage supplier information for our stationery inventory system.
+    You can add, view, edit, or delete suppliers, ensuring smooth coordination between
+    product data and supplier records.
+  </p>
+  <div class="hero-actions">
+    <a class="btn" href="{{ url_for('suppliers') }}">View Suppliers</a>
+    <a class="btn btn-ghost" href="{{ url_for('new_supplier') }}">Add Supplier</a>
+  </div>
+</div>
+{% endblock %}
