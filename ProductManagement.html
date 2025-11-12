@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management Dashboard - Member 1</title>
+    <!-- Load Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for aesthetic appeal */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #ffffffc7;
+        }
+        .container-card {
+            background: white;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+        }
+        .nav-link {
+            cursor: pointer;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s;
+            border-radius: 0.375rem; /* rounded-md */
+        }
+        .nav-link.active {
+            background-color: #fb7185; /* Blue-500 for active tab */
+            color: white;
+            font-weight: 600;
+        }
+        .nav-link:not(.active):hover {
+            background-color: #e5e7eb; /* Gray-200 hover */
+        }
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 50;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="text-xl font-semibold text-gray-700">Loading...</div>
+    </div>
+
+    <div class="max-w-7xl mx-auto">
+        <!-- Header -->
+        <header class="bg-rose-300 text-white py-4 text-center shadow-md">
+            <h1 class="text-3xl font-bold">Stationary Product Data Management</h1>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="bg-white rounded-b-xl container-card mb-6 p-3 flex flex-wrap justify-between items-center">
+            <div class="flex flex-wrap space-x-2 md:space-x-4 text-gray-600">
+                <!-- Static Pages -->
+                <span id="nav-home" class="nav-link active" onclick="showView('home')">Home</span>
+                <span id="nav-about" class="nav-link" onclick="showView('about')">About Us</span>
+                <span id="nav-faq" class="nav-link" onclick="showView('faq')">FAQ</span>
+            </div>
+            <div class="flex flex-wrap space-x-2 md:space-x-4 border-l pl-4">
+                <!-- Dynamic Pages (Forms & Report) -->
+                <span id="nav-create" class="nav-link bg-rose-400 text-white hover:bg-rose-500" onclick="showView('create')">Add New Stationary Item</span>
+                <span id="nav-update" class="nav-link bg-rose-400 text-white hover:bg-rose-500" onclick="showView('update')">Update Stationaries Status</span>
+                <span id="nav-report" class="nav-link bg-rose-400 text-white hover:bg-rose-500" style="color: white;" onclick="showView('report')">View Inventory Catalog</span>
+            </div>
+        </nav>
+
+        <!-- Main Content Views -->
+        <main id="content-container">
+            <!-- Home View -->
+            <div id="view-home" class="view container-card p-8 rounded-xl">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Welcome to the Stationery Store Management System</h2>
+                <p class="mb-6 text-gray-600">Manage your stationaries catalog, track inventory, and update product details, where everything is in one place. Keep your stationaries store organized and your stock up to date with seamless integration to the central database.</p>
+                
+                <div class="grid md:grid-cols-3 gap-6 text-center">
+                    <div class="p-5 bg-rose-50 rounded-lg border border-rose-200">
+                        <p class="font-bold text-xl text-rose-700">POST Function</p>
+                        <p class="text-sm text-rose-600 mt-2">Form 1: Create a brand new SKU/item.</p>
+                    </div>
+                    <div class="p-5 bg-rose-50 rounded-lg border border-rose-200">
+                        <p class="font-bold text-xl text-rose-700">PUT Function</p>
+                        <p class="text-sm text-rose-600 mt-2">Form 2: Update the item's operational status (Active/Discontinued/Hold).</p>
+                    </div>
+                    <div class="p-5 bg-rose-50 rounded-lg border border-rose-200">
+                        <p class="font-bold text-xl text-rose-700">GET and DELETE Function</p>
+                        <p class="text-sm text-rose-600 mt-2">View Report: Retrieve the complete, current inventory master list and also delete the unwanted product.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- About Us View -->
+            <div id="view-about" class="view container-card p-8 rounded-xl hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Project: RESTful Inventory Management System</h2>
+                <p class="mb-4 text-gray-600">This project fulfills the Web API Development requirements by demonstrating a modular application where the backend manages relational data (Products & Suppliers), and individual frontends consume the API to perform specialized business tasks.</p>
+                <div class="grid md:grid-cols-2 gap-6 mt-6">
+                    <div>
+                        <p class="font-bold text-lg text-gray-800">Technology Stack</p>
+                        <ul class="list-disc list-inside ml-4 text-gray-600">
+                            <li>Backend API : Python (Flask)</li>
+                            <li>Database : MySQL (Localhost:3306)</li>
+                            <li>This Frontend : HTML, Tailwind CSS</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <p class="font-bold text-lg text-gray-800">Group Roles</p>
+                        <ul class="list-disc list-inside ml-4 text-gray-600">
+                            <li>Member 1 (Izzati Husna)   : Product Creation & Viewing </li>
+                            <li>Member 2 (Nadia Balqis)   : Supplier Management </li>
+                            <li>Member 3 (Abdullah Naeem) : Stock Control & Ordering </li>
+                            <li>Member 4 (Anis Syakila)   : Category & Pricing </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ View -->
+            <div id="view-faq" class="view container-card p-8 rounded-xl hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Frequently Asked Questions for Inventory Users</h2>
+                <div class="space-y-4">
+                    <div class="border p-3 rounded-lg bg-gray-50">
+                        <p class="font-semibold text-gray-800">Q: What information is required to create a new product?</p>
+                        <p class="text-gray-600 text-sm">A: You must provide a Name, Price, Quantity, and a unique SKU (Stock Keeping Unit). Supplier ID is optional.</p>
+                    </div>
+                    <div class="border p-3 rounded-lg bg-gray-50">
+                        <p class="font-semibold text-gray-800">Q: When should I change a product's status to 'Discontinued'?</p>
+                        <p class="text-gray-600 text-sm">A: The status should be changed to 'Discontinued' via Form 2 when the item is no longer sold or ordered, preventing new stock entry.</p>
+                    </div>
+                    <div class="border p-3 rounded-lg bg-gray-50">
+                        <p class="font-semibold text-gray-800">Q: Why do I see a 'supplier_id' in the master list?</p>
+                        <p class="text-gray-600 text-sm">A: The system uses two database tables ('Products' and 'Suppliers'). The 'supplier_id' is a key that links the product record to the specific supplier record.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form 1: New Product Entry (POST) -->
+            <div id="view-create" class="view container-card p-8 rounded-xl hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Create New Product</h2>
+                <form id="create-product-form" class="space-y-4">
+                    <div class="grid md:grid-cols-2 gap-4">
+                        <div>
+                            <label for="create-name" class="block text-sm font-medium text-gray-700">Product Name <span class="text-red-500">*</span></label>
+                            <input type="text" id="create-name" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label for="create-sku" class="block text-sm font-medium text-gray-700">SKU (Unique ID) <span class="text-red-500">*</span></label>
+                            <input type="text" id="create-sku" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    <div class="grid md:grid-cols-3 gap-4">
+                        <div>
+                            <label for="create-price" class="block text-sm font-medium text-gray-700">Price (RM) <span class="text-red-500">*</span></label>
+                            <input type="number" step="0.01" id="create-price" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label for="create-quantity" class="block text-sm font-medium text-gray-700">Initial Quantity <span class="text-red-500">*</span></label>
+                            <input type="number" id="create-quantity" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                        <div>
+                            <label for="create-supplier-id" class="block text-sm font-medium text-gray-700">Supplier ID (Optional)</label>
+                            <input type="number" id="create-supplier-id" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500">
+                        </div>
+                    </div>
+                    <div>
+                        <label for="create-description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea id="create-description" rows="2" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-indigo-500 focus:ring-indigo-500"></textarea>
+                    </div>
+                    
+                    <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-rose-300 hover:bg-rose-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400 transition duration-150">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                        </svg>
+                        Create New Product (POST)
+                    </button>
+                    <div id="create-message" class="mt-2 text-center font-medium"></div>
+                </form>
+            </div>
+
+            <!-- Form 2: Status Update (PUT) -->
+            <div id="view-update" class="view container-card p-8 rounded-xl hidden">
+                <h2 class="text-2xl font-semibold text-gray-700 mb-4 border-b pb-2">Update Product Status</h2>
+                <form id="update-status-form" class="space-y-4 max-w-lg mx-auto p-6 border rounded-lg bg-blue-50">
+                    <div class="mb-4">
+                        <label for="update-id" class="block text-sm font-medium text-gray-700">Product ID to Update<span class="text-red-500">*</span></label>
+                        <input type="number" id="update-id" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border focus:border-blue-500 focus:ring-blue-500">
+                    </div>
+                    <div class="mb-6">
+                        <label for="update-status" class="block text-sm font-medium text-gray-700">New Status<span class="text-red-500">*</span></label>
+                        <select id="update-status" required class="mt-1 block w-full rounded-md border-gray-300 shadow-sm p-2 border bg-white focus:border-blue-500 focus:ring-blue-500">
+                            <option value="Active">Active</option>
+                            <option value="Discontinued">Discontinued</option>
+                            <option value="Hold">On Hold</option>
+                            <option value="Archived">Archived</option>
+                        </select>
+                    </div>
+                    
+                    <button type="submit" class="w-full py-3 px-4 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-rose-300 hover:bg-rose-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-pink-400 transition duration-150">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline mr-2" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M17.414 2.586a2 2 0 00-2.828 0L7 10.172V13h2.828l7.586-7.586a2 2 0 000-2.828z" />
+                            <path fill-rule="evenodd" d="M2 6a2 2 0 012-2h4a1 1 0 010 2H4v10h10v-4a1 1 0 112 0v4a2 2 0 01-2 2H4a2 2 0 01-2-2V6z" clip-rule="evenodd" />
+                        </svg>
+                        Update Product Status (PUT)
+                    </button>
+                    <div id="update-message" class="mt-2 text-center font-medium"></div>
+                </form>
+            </div>
+
+            <!-- View Report: Master Product List (GET) -->
+            <div id="view-report" class="view container-card p-8 rounded-xl hidden">
+                <div class="flex justify-between items-center mb-6 border-b pb-2">
+                    <h2 class="text-2xl font-semibold text-gray-700">Master Product List</h2>
+                    <button onclick="fetchProducts()" class="py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 bg-white hover:bg-gray-100 transition duration-150">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 inline-block mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m15.356-5H15m-4 12v5h.582m-15.356 2A8.001 8.001 0 0019.418 15m-15.356 2H9" />
+                        </svg>
+                        Refresh Inventory Data
+                    </button>
+                </div>
+                <div id="report-message" class="mb-4 text-center font-medium text-gray-600"></div>
+                
+                <div class="overflow-x-auto rounded-lg border">
+                    <table class="min-w-full divide-y divide-gray-200">
+                        <thead class="bg-gray-100">
+                            <tr>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Product Name / SKU</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Price (RM)</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Quantity</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Supplier ID</th>
+                                <th class="px-6 py-3 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
+                                <th class="px-6 py-3 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">Actions</th> 
+                            </tr>
+                        </thead>
+                        <tbody id="product-table-body" class="bg-white divide-y divide-gray-200">
+                            <!-- Data will be inserted here by JavaScript -->
+                            <tr>
+                                <td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">Click "Refresh Inventory Data" to load products.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <script>
+        // API Base URL (Standard local address for testing on the same machine)
+        const API_URL = 'http://127.0.0.1:5000/api/products/'; 
+
+        // --- Utility Functions ---
+
+        function toggleLoading(show) {
+            document.getElementById('loading-overlay').style.display = show ? 'flex' : 'none';
+        }
+
+        function updateMessage(id, message, isError = false) {
+            const el = document.getElementById(id);
+            el.textContent = message;
+            el.className = `mt-2 text-center font-medium ${isError ? 'text-red-600' : 'text-green-600'}`;
+        }
+
+        function showView(viewId) {
+            document.querySelectorAll('.view').forEach(view => {
+                view.classList.add('hidden');
+            });
+            document.getElementById(`view-${viewId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-link').forEach(link => {
+                link.classList.remove('active', 'bg-blue-500', 'bg-indigo-500', 'text-white', 'hover:bg-blue-700', 'hover:bg-indigo-700');
+                if (link.id === 'nav-create') link.classList.add('bg-rose-400', 'text-white', 'hover:bg-rose-500');
+                if (link.id === 'nav-update') link.classList.add('bg-rose-400', 'text-white', 'hover:bg-rose-500');
+                if (link.id === 'nav-report' || link.id === 'nav-home' || link.id === 'nav-about' || link.id === 'nav-faq') link.classList.add('text-gray-600');
+            });
+
+            document.getElementById(`nav-${viewId}`).classList.add('active');
+            
+            // Re-apply special classes for active dynamic links
+            if (viewId === 'create') document.getElementById('nav-create').classList.remove('bg-indigo-600', 'text-gray-600');
+            if (viewId === 'update') document.getElementById('nav-update').classList.remove('bg-blue-600', 'text-gray-600');
+            
+            // Automatically fetch products when navigating to the report view
+            if (viewId === 'report') {
+                fetchProducts();
+            }
+        }
+
+        // --- API & Report Functions ---
+
+        /** FETCH ALL PRODUCTS (GET) for the Report View */
+        async function fetchProducts() {
+            toggleLoading(true);
+            updateMessage('report-message', 'Fetching latest product data from API...');
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'GET',
+                    headers: {'Content-Type': 'application/json'}
+                });
+
+                if (response.ok) {
+                    const products = await response.json();
+                    renderProductTable(products);
+                    updateMessage('report-message', `Successfully loaded ${products.length} products.`, false);
+                } else {
+                    const error = await response.json();
+                    updateMessage('report-message', `Error (${response.status}): Could not load data. Details: ${error.details || 'Check Flask Console.'}`, true);
+                }
+            } catch (error) {
+                console.error('Fetch error:', error);
+                updateMessage('report-message', 'Network Error: Could not reach the Flask API (Server down or URL incorrect).', true);
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+        /** DELETE PRODUCT (DELETE) */
+        async function deleteProduct(productId) {
+            // Confirmation dialog to prevent accidental deletion
+            const isConfirmed = confirm(`Are you sure you want to permanently delete Product ID ${productId}?`);
+            if (!isConfirmed) return;
+
+            toggleLoading(true);
+
+            try {
+                // The DELETE request URL needs the product ID at the end
+                const response = await fetch(`${API_URL}${productId}`, {
+                    method: 'DELETE',
+                    headers: {'Content-Type': 'application/json'}
+                });
+
+                if (response.status === 204) { // 204 No Content is the success code for DELETE
+                    updateMessage('report-message', `Product ID ${productId} deleted successfully. Refreshing list...`, false);
+                    fetchProducts(); // Refresh the table after deletion
+                } else if (response.status === 404) {
+                    updateMessage('report-message', `Deletion Failed: Product ID ${productId} not found.`, true);
+                } else {
+                    const result = await response.json();
+                    updateMessage('report-message', `Deletion Failed (${response.status}): ${result.error}.`, true);
+                }
+            } catch (error) {
+                console.error('DELETE Fetch error:', error);
+                updateMessage('report-message', 'Network Error: Could not delete product. Is server running?', true);
+            } finally {
+                toggleLoading(false);
+            }
+        }
+
+
+        
+        function renderProductTable(products) {
+            const tbody = document.getElementById('product-table-body');
+            tbody.innerHTML = ''; 
+
+            if (products.length === 0) {
+                tbody.innerHTML = `
+                    <tr><td colspan="7" class="px-6 py-4 text-center text-sm text-gray-500">No products found. Start by creating a product via Form 1.</td></tr>`;
+                return;
+            }
+
+            products.forEach(product => {
+                const statusClass = product.status === 'Discontinued' ? 'text-red-600 font-semibold' : 
+                                    product.status === 'Hold' ? 'text-yellow-600 font-semibold' : 'text-green-600';
+                
+               
+                const price = typeof product.price === 'string' ? parseFloat(product.price) : product.price;
+
+                const row = `
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">${product.product_id}</td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <div class="text-sm font-medium text-gray-900">${product.name}</div>
+                            <div class="text-xs text-gray-500">SKU: ${product.sku}</div>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">RM ${price ? price.toFixed(2) : 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${product.quantity}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">${product.supplier_id || 'N/A'}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm ${statusClass}">${product.status}</td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-center">
+                            <button onclick="deleteProduct(${product.product_id})" 
+                                class="text-red-600 hover:text-red-900 font-medium transition duration-150 focus:outline-none">
+                                Delete
+                            </button>
+                        </td>
+                    </tr>
+                `;
+                tbody.innerHTML += row;
+            });
+        }
+
+
+        
+        document.getElementById('create-product-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            toggleLoading(true);
+            updateMessage('create-message', 'Sending new product data...');
+
+            const data = {
+                name: document.getElementById('create-name').value,
+                sku: document.getElementById('create-sku').value,
+                price: parseFloat(document.getElementById('create-price').value),
+                quantity: parseInt(document.getElementById('create-quantity').value, 10),
+                
+                supplier_id: document.getElementById('create-supplier-id').value ? parseInt(document.getElementById('create-supplier-id').value, 10) : null,
+                description: document.getElementById('create-description').value
+            };
+
+            try {
+                const response = await fetch(API_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.status === 201) {
+                    updateMessage('create-message', `Success! Product ID ${result.id} created.`, false);
+                    this.reset(); 
+                } else {
+                    updateMessage('create-message', `Creation Failed (${response.status}): ${result.error}. Details: ${result.details || 'Check Flask Console/SKU uniqueness.'}`, true);
+                }
+            } catch (error) {
+                console.error('POST Fetch error:', error);
+                updateMessage('create-message', 'Network Error: Could not connect to the API. Is server running?', true);
+            } finally {
+                toggleLoading(false);
+            }
+        });
+
+        
+        document.getElementById('update-status-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            toggleLoading(true);
+            updateMessage('update-message', 'Sending status update...');
+
+            const productId = document.getElementById('update-id').value;
+            const newStatus = document.getElementById('update-status').value;
+            
+            const data = {
+                status: newStatus
+            };
+
+            try {
+                
+                const updateUrl = `${API_URL}${productId}`; 
+
+                const response = await fetch(updateUrl, {
+                    method: 'PUT',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (response.status === 200) {
+                    updateMessage('update-message', `Success! Product ID ${productId} status changed to ${newStatus}.`, false);
+                } else if (response.status === 404) {
+                     updateMessage('update-message', `Update Failed (404): Product ID ${productId} not found.`, true);
+                } else {
+                    updateMessage('update-message', `Update Failed (${response.status}): ${result.error}.`, true);
+                }
+            } catch (error) {
+                console.error('PUT Fetch error:', error);
+                updateMessage('update-message', 'Network Error: Could not connect to the API. Is server running?', true);
+            } finally {
+                toggleLoading(false);
+            }
+        });
+
+        
+        document.addEventListener('DOMContentLoaded', () => {
+            showView('home');
+        });
+    </script>
+</body>
+</html>
