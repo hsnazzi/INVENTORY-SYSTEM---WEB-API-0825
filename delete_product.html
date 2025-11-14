@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Delete Product | Inventory System</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <ul style="list-style:none; display:flex; gap:20px;">
+      <li><a href="{{ url_for('index') }}">Home</a></li>
+      <li><a href="{{ url_for('about_page') }}">About Us</a></li>
+      <li><a href="{{ url_for('faq_page') }}">FAQ</a></li>
+    </ul>
+  </nav>
+  <hr>
+
+  <h1>Delete Product</h1>
+  <div class="form-box">
+    <label>Product ID:</label>
+    <input type="number" id="deleteId" placeholder="Enter Product ID">
+
+    <button onclick="deleteProduct()">Delete Product</button>
+    <p id="deleteMsg"></p>
+  </div>
+
+  <script>
+    async function deleteProduct() {
+      const id = document.getElementById("deleteId").value;
+      if (!confirm(`Are you sure you want to delete Product ID ${id}?`)) return;
+
+      const res = await fetch(`http://127.0.0.1:5000/api/products/${id}`, {
+        method: 'DELETE'
+      });
+
+      const data = await res.json();
+      document.getElementById("deleteMsg").textContent = data.message || "Deleted!";
+    }
+  </script>
+</body>
+</html>
