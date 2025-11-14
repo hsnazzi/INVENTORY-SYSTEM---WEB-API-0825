@@ -24,6 +24,14 @@ def about():
 def faq():
     return render_template("faq.html", title="FAQ - Stationery Supplier Data Management")
 
+@app.route('/update-product')
+def update_product_page():
+    return render_template('update_product.html')
+
+@app.route('/delete-product')
+def delete_product_page():
+    return render_template('delete_product.html')
+
 # List suppliers
 @app.route("/suppliers")
 def suppliers():
@@ -117,3 +125,4 @@ def report():
 
 if __name__ == "__main__":
     app.run(debug=True, host="0.0.0.0", port=8000)
+
