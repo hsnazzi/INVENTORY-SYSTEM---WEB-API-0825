@@ -1,0 +1,217 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Inventory Dashboard</title>
+<!-- Use Flask url_for to load static files -->
+<link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+</head>
+<body>
+
+<div id="toast-container"></div>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>
+        <a href="{{ url_for('home') }}" style="color: white; text-decoration: none;">
+            📚 Stationery Store
+        </a>
+    </h2>
+    <button onclick="showSection('dashboard')">🏠 Dashboard</button>
+    <button onclick="showSection('products')">📦 Products</button>
+    <button onclick="showSection('suppliers')">🏢 Suppliers</button>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="main">
+
+    <!-- DASHBOARD SECTION -->
+    <section id="dashboardSection" class="section">
+        <h2>Dashboard Overview</h2>
+        <div class="dashboard-summary">
+            <div class="summary-card">
+                <div class="card-icon">📈</div>
+                <div class="card-content">
+                    <h3>Total Products</h3>
+                    <p class="big-number">12</p>
+                    <small class="trend up">+2 this month</small>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon">⚠️</div>
+                <div class="card-content">
+                    <h3>Low Stock Items</h3>
+                    <p class="big-number">3</p>
+                    <small>Below threshold (5)</small>
+                </div>
+            </div>
+            <div class="summary-card">
+                <div class="card-icon">🏢</div>
+                <div class="card-content">
+                    <h3>Active Suppliers</h3>
+                    <p class="big-number">8</p>
+                    <small class="trend">No change</small>
+                </div>
+            </div>
+        </div>
+
+        <!-- dashboard-controls removed to avoid duplicate search -->
+
+
+            <!-- Inventory Monitoring Panel -->
+    <div class="monitoring-panel">
+        <div class="monitoring-header">
+            <input id="monitorSearch" placeholder="Search product or SKU..." />
+            <select id="monitorFilter">
+                <option value="all">All</option>
+                <option value="low">Low Stock</option>
+                <option value="out">Out of Stock</option>
+                <option value="active">Active</option>
+            </select>
+            <button class="btn" id="btnRefreshMonitor">Refresh</button>
+        </div>
+
+        <div class="monitor-grid">
+            <div class="low-stock-widgets" id="lowStockWidgets">
+                <!-- low-stock cards inserted by JS -->
+            </div>
+
+            <div class="monitor-table-wrap">
+                <table id="monitorTable">
+                    <thead>
+                        <tr>
+                            <th data-sort="name">Name ▲▼</th>
+                            <th data-sort="sku">SKU</th>
+                            <th data-sort="price">Price</th>
+                            <th data-sort="quantity">Stock</th>
+                            <th>Trend</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="monitorTbody">
+                        <!-- rows inserted by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    </section>
+
+    <!-- PRODUCT SECTION -->
+    <section id="productsSection" class="section hidden">
+        <div class="header">
+            <h2>Products</h2>
+            <button class="btn" onclick="openProductModal()">
+                <i class="fa fa-plus"></i> Add Product
+            </button>
+        </div>
+
+        <div class="search-controls">
+            <div class="search-group">
+                <input id="productSearch" placeholder="Search by name or SKU..." />
+            </div>
+            <div class="view-controls">
+                <button class="btn" onclick="toggleView('table')">Table View</button>
+                <button class="btn" onclick="toggleView('cards')">Card View</button>
+            </div>
+        </div>
+
+    <!-- summary counters used by JS -->
+    <div style="margin:12px 0;">
+        <span>Total Products: <strong id="totalProducts">0</strong></span>
+        &nbsp;&nbsp;
+        <span>Total Suppliers: <strong id="totalSuppliers">0</strong></span>
+    </div>
+
+    <!-- Table view -->
+    <div id="productsContainer" class="table-view">
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>SKU</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="productsList"></tbody>
+        </table>
+    </div>
+
+        <!-- Card view container -->
+        <div id="productsCards" style="display:none;"></div>
+    </section>
+
+    <!-- SUPPLIER SECTION -->
+    <section id="suppliersSection" class="section hidden">
+        <div class="header">
+            <h2>Suppliers</h2>
+            <button class="btn" onclick="openSupplierModal()">
+                <i class="fa fa-plus"></i> Add Supplier
+            </button>
+        </div>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>🏢 Name</th>
+                    <th>👤 Contact</th>
+                    <th>📞 Phone</th>
+                    <th>⚙️ Action</th>
+                </tr>
+            </thead>
+            <tbody id="suppliersList"></tbody>
+        </table>
+    </section>
+
+</div>
+
+<!-- PRODUCT MODAL -->
+<div id="productModal" class="modal">
+    <div class="modal-content">
+        <h3>Product Form</h3>
+        <input type="hidden" id="product_id">
+
+        <input placeholder="Name" id="name">
+        <input placeholder="SKU" id="sku">
+        <input placeholder="Price" id="price" type="number">
+        <input placeholder="Quantity" id="quantity" type="number">
+        <input placeholder="Supplier ID" id="supplier_id" type="number">
+        <input placeholder="Status" id="status">
+        <textarea placeholder="Description" id="description"></textarea>
+
+        <div class="modal-footer">
+            <button class="btn" onclick="saveProduct(event)">Save</button>
+            <button class="btn btn-danger" onclick="closeModal('productModal')">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- SUPPLIER MODAL -->
+<div id="supplierModal" class="modal">
+    <div class="modal-content">
+        <h3>Supplier Form</h3>
+        <input type="hidden" id="supplier_form_id">
+
+        <input placeholder="Supplier Name" id="supplier_name">
+        <input placeholder="Contact Person" id="supplier_contact">
+        <input placeholder="Phone" id="supplier_phone">
+        <input placeholder="Email" id="supplier_email">
+        <textarea placeholder="Address" id="supplier_address"></textarea>
+
+        <div class="modal-footer">
+            <button class="btn" onclick="saveSupplier(event)">Save</button>
+            <button class="btn btn-danger" onclick="closeModal('supplierModal')">Cancel</button>
+        </div>
+    </div>
+</div>
+
+<!-- Use Flask url_for to load JS -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{{ url_for('static', filename='main.js') }}" defer></script>
+</body>
+</html>
